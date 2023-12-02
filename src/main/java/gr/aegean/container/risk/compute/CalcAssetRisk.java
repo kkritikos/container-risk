@@ -1,5 +1,5 @@
 package gr.aegean.container.risk.compute;
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -88,17 +88,12 @@ public class CalcAssetRisk {
 				}
 				// calculate P_aone
 				Double probForP_aone = 1.0;
-				BigDecimal bd = new BigDecimal("1.0");
 				for (int x = 0; x < probabilities.size(); x++) {
 					// System.out.println("probabilties.get(x): "+probabilities.get(x));
 					probForP_aone = probForP_aone * (1 - probabilities.get(x));
-					bd = bd.multiply(new BigDecimal(1-probabilities.get(x)));
 					// System.out.println("probForP_aone inside for loop: " + probForP_aone);
 				} //for
 				probForP_aone = 1 - probForP_aone;
-				BigDecimal bd2 = new BigDecimal(1.0);
-				bd2 = bd2.subtract(bd);
-				System.out.println("BD is: " + bd2.toString());
 				System.out.println("probForP_aone: " + probForP_aone);
 				for (int x = 0; x < risks.size(); x++) {
 					riskSum = riskSum + risks.get(x);
