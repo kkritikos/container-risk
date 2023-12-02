@@ -46,7 +46,7 @@ public class Orchestrator {
 		VulnerabilityRepository repo = new VulnerabilityRepository();
 		//Calculating the risks for tool agglomeration & each tool
 		calculateRiskData(globalRiskData,repo,images);
-		/*calculateRiskData(localRiskData.get("clair"),repo,images);*/
+		calculateRiskData(localRiskData.get("clair"),repo,images);
 		calculateRiskData(localRiskData.get("grype"),repo,images);
 
 		//Writing results to results directory
