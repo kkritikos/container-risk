@@ -71,6 +71,7 @@ public class ReportGenerator {
 			
 			Set<String> cves = getCVEs(image, riskData);
 			String cveStr = getCVEString(cves);
+			imgObj.put("imageCVENum", cves.size());
 			imgObj.put("imageCVEs", cves);
 			
 			JSONArray assetArray = new JSONArray();
@@ -82,6 +83,7 @@ public class ReportGenerator {
 				
 				cves = riskData.getFinalAssets(image).get(asset);
 				cveStr = getCVEString(cves);
+				imgObj.put("assetCVENum", cves.size());
 				assetObj.put("assetCVEs", cves);
 				
 				assetArray.add(assetObj);
