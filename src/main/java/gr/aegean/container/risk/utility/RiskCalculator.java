@@ -10,7 +10,7 @@ public class RiskCalculator {
 			risk = risk + entry.getValue();
 		}
 		risk = risk / size;
-		risk = Math.round(risk * 1000000.0) / 1000000.0;
+		//risk = Math.round(risk * 1000000.0) / 1000000.0;
 		
 		return risk;
 	}
