@@ -23,7 +23,7 @@ public class GrypeRunner implements ToolRunner {
 		for (int i = 0; i < imageNames.size(); i++) {
 			System.out.println("Auto created file to save Grype output for image: " + imageNames.get(i));
 			
-			String grypeFile = imagesDir + File.separator + imageNames.get(i) + filePostfix;
+			String grypeFile = imagesDir + File.separator + imageNames.get(i).replace(':','_') + filePostfix;
 			grypeFiles.add(grypeFile);
 			File file = new File(grypeFile);
 			
