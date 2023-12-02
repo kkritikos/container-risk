@@ -1,6 +1,5 @@
 package gr.aegean.container.risk.compute;
 
-import java.math.BigDecimal;
 import java.util.Map;
 
 import gr.aegean.container.risk.data.RiskData;
@@ -48,12 +47,9 @@ public class CalcImageRisk {
 	
 	private void calculateProb() {
 		double imageProb = 1.0;
-		BigDecimal bd = new BigDecimal(1.0);
 		for (Map.Entry<String, Double> entry : riskData.getAssetWithProb(imageName).entrySet()) {
 			imageProb = imageProb * (1 - entry.getValue());
-			bd  = bd.multiply(new BigDecimal(1-entry.getValue()));
 		}
-		System.out.println("BD is: " + bd.toEngineeringString());
 		imageProb = 1 - imageProb;
 		
 		riskData.getImageWithProb().put(imageName, imageProb);
