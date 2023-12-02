@@ -32,7 +32,7 @@ public class RetrieveDataFromOnlineDB {
 		BufferedReader re = new BufferedReader(new InputStreamReader(input.getInputStream(), Charset.forName("UTF-8")));
 		// Buffer Reading In UTF-8
 		String text = Read(re); // Handy Method To Read Data From BufferReader
-		System.out.println("Vulnerability text for url: " + url + " " + text);
+		//System.out.println("Vulnerability text for url: " + url + " " + text);
 		JSONObject json = new JSONObject(text); // Creating A JSON
 		JSONObject j1 = (JSONObject) json.get("result");
 		JSONArray j2 = (JSONArray) j1.get("CVE_Items");
