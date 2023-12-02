@@ -13,6 +13,12 @@ import gr.aegean.container.risk.compute.Function;
 public final class PropertyReader {
 	private static final String propertyFileName = "config.properties";
 	
+	public enum Mode{
+		ALL,
+		SCAN,
+		ASSESS
+	}
+	
     private static String clairApi;
     private static String clairPath;
     private static String nvdUrl;
@@ -20,6 +26,7 @@ public final class PropertyReader {
     private static Function imageFunction;
     private static Function appFunction;
     private static List<String> images;
+    private static Mode mode; 
     
     private PropertyReader() {}
 	
@@ -66,7 +73,15 @@ public final class PropertyReader {
 			appFunction = getFunction(aFunc);
 			String imgs = getDefaultValueIfNull(props.getProperty("images"),"ruby:latest,node:latest").toLowerCase();
 			images = getImages(imgs);
+			String m = getDefaultValueIfNull(props.getProperty("mode"),"all").toLowerCase();
+			mode = getMode(m);
 		}
+	}
+	
+	private static Mode getMode(String m) {
+		if (m.toLowerCase().equals("scan")) return Mode.SCAN;
+		else if (m.toLowerCase().equals("assess")) return Mode.ASSESS;
+		else return Mode.ALL;
 	}
 	
 	private static Function getFunction(String func) {
@@ -83,22 +98,6 @@ public final class PropertyReader {
 		List<String> images = Arrays.asList(a);
 		
 		return images;
-	}
-	
-	private static List<Double> getDoubles(String s){
-		String[] a = s.split(",");
-		List<Double> doubles = new ArrayList<Double>();
-		for (String d: a) {
-			try {
-				Double res = Double.parseDouble(d);
-				doubles.add(res);
-			}
-			catch(Exception e) {
-				doubles.add(0.5);
-			}
-		}
-		
-		return doubles;
 	}
 
 	public static String getClairApi() {
@@ -135,5 +134,9 @@ public final class PropertyReader {
 
 	public static List<String> getImages() {
 		return images;
+	}
+
+	public static Mode getMode() {
+		return mode;
 	}
 }

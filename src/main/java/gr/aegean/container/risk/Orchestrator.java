@@ -10,6 +10,7 @@ import gr.aegean.container.risk.compute.CalcAssetRisk;
 import gr.aegean.container.risk.compute.CalcImageRisk;
 import gr.aegean.container.risk.compute.CalcOverallRisk;
 import gr.aegean.container.risk.configuration.PropertyReader;
+import gr.aegean.container.risk.configuration.PropertyReader.Mode;
 import gr.aegean.container.risk.data.RiskData;
 import gr.aegean.container.risk.data.VulnerabilityRepository;
 import gr.aegean.container.risk.scanner.ClairScannerRunner;
@@ -20,38 +21,53 @@ public class Orchestrator {
 	
 	public static void run() {
 		List<String> images = PropertyReader.getImages();
+		Mode mode = PropertyReader.getMode();
+		ClairScannerRunner clairRunner = null;
+		GrypeRunner grypeRunner = null;
 		
 		//Running the image vulnerability scanners
-		ClairScannerRunner clairRunner = new ClairScannerRunner();
-		clairRunner.runTool(images);
-		GrypeRunner grypeRunner = new GrypeRunner();
-		grypeRunner.runTool(images);
-		
-		//Creating the RiskData
-		RiskData globalRiskData = new RiskData(images);
-		Map<String, RiskData> localRiskData = new HashMap<String, RiskData>();
-		localRiskData.put("clair", new RiskData(images));
-		localRiskData.put("grype", new RiskData(images));
-		
-		//Running the result analyzers
-		for (int i = 0; i < images.size(); i++) {
-			String image = images.get(i);
-			ClairAnalyzer ca = new ClairAnalyzer(globalRiskData,localRiskData.get("clair"),image);
-			ca.analyze(clairRunner.getResultFiles().get(i));
-			
-			GrypeAnalyzer ga = new GrypeAnalyzer(globalRiskData,localRiskData.get("grype"),image);
-			ga.analyze(grypeRunner.getResultFiles().get(i));
+		if (mode == Mode.ALL || mode == Mode.SCAN) {
+			clairRunner = new ClairScannerRunner();
+			clairRunner.runTool(images);
+			grypeRunner = new GrypeRunner();
+			grypeRunner.runTool(images);
 		}
 		
-		VulnerabilityRepository repo = new VulnerabilityRepository();
-		//Calculating the risks for tool agglomeration & each tool
-		calculateRiskData(globalRiskData,repo,images);
-		calculateRiskData(localRiskData.get("clair"),repo,images);
-		calculateRiskData(localRiskData.get("grype"),repo,images);
-
-		//Writing results to results directory
-		ReportGenerator rg = new ReportGenerator(globalRiskData, localRiskData);
-		rg.writeResults();
+		//Conducting the assessment based on the scanning results
+		if (mode == Mode.ALL || mode == Mode.ASSESS) {
+			//Creating the RiskData
+			RiskData globalRiskData = new RiskData(images);
+			Map<String, RiskData> localRiskData = new HashMap<String, RiskData>();
+			localRiskData.put("clair", new RiskData(images));
+			localRiskData.put("grype", new RiskData(images));
+			
+			//Running the result analyzers
+			List<String> clairFiles;
+			if (clairRunner == null) clairFiles = ClairScannerRunner.getResultFilesFromImageNames(images);
+			else clairFiles = clairRunner.getResultFiles();
+			List<String> grypeFiles;
+			if (grypeRunner == null) grypeFiles = GrypeRunner.getResultFilesFromImageNames(images);
+			else grypeFiles = grypeRunner.getResultFiles();
+			for (int i = 0; i < images.size(); i++) {
+				String image = images.get(i);
+				ClairAnalyzer ca = new ClairAnalyzer(globalRiskData,localRiskData.get("clair"),image);
+				ca.analyze(clairFiles.get(i));
+				
+				GrypeAnalyzer ga = new GrypeAnalyzer(globalRiskData,localRiskData.get("grype"),image);
+				ga.analyze(grypeFiles.get(i));
+			}
+			
+			VulnerabilityRepository repo = new VulnerabilityRepository();
+			//Calculating the risks for tool agglomeration & each tool
+			calculateRiskData(globalRiskData,repo,images);
+			calculateRiskData(localRiskData.get("clair"),repo,images);
+			calculateRiskData(localRiskData.get("grype"),repo,images);
+			repo.save();
+	
+			//Writing results to results directory
+			ReportGenerator rg = new ReportGenerator(globalRiskData, localRiskData);
+			rg.writeResults();
+		}
 	}
 	
 	private static void calculateRiskData(RiskData data, VulnerabilityRepository repo, List<String> images) {

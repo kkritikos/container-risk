@@ -39,7 +39,13 @@ public class RetrieveDataFromOnlineDB {
 		JSONObject j3 = (JSONObject) j2.get(0);
 		JSONObject j4 = (JSONObject) j3.get("impact");
 		JSONObject j5 = (JSONObject) j4.get("baseMetricV2");
-		JSONObject j6 = (JSONObject) j5.get("cvssV2");
+		JSONObject j6 = null;
+		if (j5 == null) {
+			j5 = (JSONObject) j4.get("baseMetricV3");
+			j6 = (JSONObject) j5.get("cvssV3");
+		}
+		else j6 = (JSONObject) j5.get("cvssV2");
+		
 		/*
 		 * Testing System.out.println("j1 (result): "+j1);
 		 * System.out.println("j2 (CVE_Items): "+j2); System.out.println("j3 (0): "+j3);

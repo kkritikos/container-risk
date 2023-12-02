@@ -92,7 +92,7 @@ public class CalcAssetRisk {
 				// System.out.println("probForP_aone inside for loop: " + probForP_aone);
 			} //for
 			probForP_aone = 1 - probForP_aone;
-			// System.out.println("probForP_aone: " + probForP_aone);
+			System.out.println("probForP_aone: " + probForP_aone);
 			for (int x = 0; x < risks.size(); x++) {
 				riskSum = riskSum + risks.get(x);
 			}//for
@@ -100,7 +100,7 @@ public class CalcAssetRisk {
 			
 			finalRisk = probForP_aone * (1 / propabilitySum) * riskSum;
 			finalRisk = Math.round(finalRisk * 100.0) / 100.0;
-			// System.out.println("risk for asset: " + asset + " is: " +finalRisk);
+			System.out.println("risk for asset: " + asset + " is: " +finalRisk);
 			riskData.getAssetWithRisk(imageName).put(asset, finalRisk);
 			riskData.getAssetWithProb(imageName).put(asset, probForP_aone); 
 			
