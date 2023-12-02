@@ -16,9 +16,18 @@ public class CalcImageRisk {
 		this.imageName = imageName;
 	}
 	
+	private void printMap(Map<String, Double> map, String msg) {
+		System.out.println(msg);
+		for (String asset: map.keySet()) {
+			System.out.println("Asset: " + asset + " with value: " + map.get(asset));
+		}
+	}
+	
 	public void calculateRisk() {
 		Map<String,Double> assetWithRisk = riskData.getAssetWithRisk(imageName);
+		printMap(assetWithRisk, "Printing image's assets risks");
 		Map<String,Double> assetWithProb = riskData.getAssetWithProb(imageName);
+		printMap(assetWithProb, "Printing image's assets probs");
 		if (!assetWithRisk.isEmpty()) {
 			double imageRisk = 0.0;
 			calculateProb();

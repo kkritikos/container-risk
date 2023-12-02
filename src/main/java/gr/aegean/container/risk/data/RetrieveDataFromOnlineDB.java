@@ -67,7 +67,12 @@ public class RetrieveDataFromOnlineDB {
 		JSONObject json = new JSONObject(Text); // Creating A JSON
 		JSONObject j4 = (JSONObject) json.get("impact");
 		JSONObject j5 = (JSONObject) j4.get("baseMetricV2");
-		JSONObject j6 = (JSONObject) j5.get("cvssV2");
+		JSONObject j6 = null;
+		if (j5 == null) {
+			j5 = (JSONObject) j4.get("baseMetricV3");
+			j6 = (JSONObject) j5.get("cvssV3");
+		}
+		else j6 = (JSONObject) j5.get("cvssV2");
 		// System.out.println("j6 (cvssV2): " + j6);
 		return j6; // Returning JSON
 	}
