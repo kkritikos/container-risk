@@ -1,0 +1,74 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>gr.aegean</groupId>
+  <artifactId>container-risk</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <properties>
+  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven-exec>1.2.1</maven-exec>
+    <assembly-version>3.3.0</assembly-version>
+  	<json-simple-version>1.1</json-simple-version>
+  	<json-version>20231013</json-version>
+  </properties>
+  
+  <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <plugins>
+		<plugin>
+  		<groupId>org.codehaus.mojo</groupId>
+  		<artifactId>exec-maven-plugin</artifactId>
+  		<version>${maven-exec}</version>
+  		<executions>
+    		<execution>
+      			<goals>
+        			<goal>java</goal>
+      			</goals>
+    		</execution>
+        </executions>
+  		<configuration>
+    		<mainClass>gr.aegean.container.risk.Orchestrator</mainClass>
+  		</configuration>
+        </plugin>
+        <plugin>
+	        <artifactId>maven-assembly-plugin</artifactId>
+	        <version>${assembly-version}</version>
+	        <configuration>
+	          <descriptorRefs>
+	            <descriptorRef>jar-with-dependencies</descriptorRef>
+	          </descriptorRefs>
+	          <archive>
+	            <manifest> <!-- allowing the execution of the jar with –jar JVM switch -->
+	              <mainClass>gr.aegean.container.risk.Orchestrator</mainClass>
+	            </manifest>
+          	  </archive>
+	        </configuration>
+	        <executions>
+	          <execution>
+	            <id>make-assembly</id> <!-- this is used for inheritance merges -->
+	            <phase>package</phase> <!-- bind to the packaging phase -->
+	            <goals>
+	              <goal>single</goal>
+	            </goals>
+	          </execution>
+	        </executions>    
+        </plugin>
+	</plugins>
+  </build>
+  
+  <dependencies>
+  	<dependency>
+		<groupId>com.googlecode.json-simple</groupId>
+		<artifactId>json-simple</artifactId>
+		<version>${json-simple-version}</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.json</groupId>
+    	<artifactId>json</artifactId>
+    	<version>${json-version}</version>
+	</dependency>
+  </dependencies>
+</project>
