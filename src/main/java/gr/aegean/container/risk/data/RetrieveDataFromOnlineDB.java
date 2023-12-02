@@ -38,19 +38,17 @@ public class RetrieveDataFromOnlineDB {
 		JSONArray j2 = (JSONArray) j1.get("CVE_Items");
 		JSONObject j3 = (JSONObject) j2.get(0);
 		JSONObject j4 = (JSONObject) j3.get("impact");
-		JSONObject j5 = (JSONObject) j4.get("baseMetricV2");
 		JSONObject j6 = null;
-		if (j5 == null) {
-			j5 = (JSONObject) j4.get("baseMetricV3");
+		boolean v2 = j4.has("baseMetricV2");
+		if (v2) {
+			JSONObject j5 = (JSONObject) j4.get("baseMetricV2");
+			j6 = (JSONObject) j5.get("cvssV2");
+		}
+		else {
+			JSONObject j5 = (JSONObject) j4.get("baseMetricV3");
 			j6 = (JSONObject) j5.get("cvssV3");
 		}
-		else j6 = (JSONObject) j5.get("cvssV2");
-		
-		/*
-		 * Testing System.out.println("j1 (result): "+j1);
-		 * System.out.println("j2 (CVE_Items): "+j2); System.out.println("j3 (0): "+j3);
-		 * System.out.println("j6 (cvssV2): " + j6);
-		 */
+	
 		return j6; // Returning JSON
 	}
 
@@ -66,14 +64,16 @@ public class RetrieveDataFromOnlineDB {
 		String Text = Read(re); // Handy Method To Read Data From BufferReader
 		JSONObject json = new JSONObject(Text); // Creating A JSON
 		JSONObject j4 = (JSONObject) json.get("impact");
-		JSONObject j5 = (JSONObject) j4.get("baseMetricV2");
 		JSONObject j6 = null;
-		if (j5 == null) {
-			j5 = (JSONObject) j4.get("baseMetricV3");
+		boolean v2 = j4.has("baseMetricV2");
+		if (v2) {
+			JSONObject j5 = (JSONObject) j4.get("baseMetricV2");
+			j6 = (JSONObject) j5.get("cvssV2");
+		}
+		else {
+			JSONObject j5 = (JSONObject) j4.get("baseMetricV3");
 			j6 = (JSONObject) j5.get("cvssV3");
 		}
-		else j6 = (JSONObject) j5.get("cvssV2");
-		// System.out.println("j6 (cvssV2): " + j6);
 		return j6; // Returning JSON
 	}
 
