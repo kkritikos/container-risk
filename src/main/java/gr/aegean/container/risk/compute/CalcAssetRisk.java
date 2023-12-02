@@ -43,7 +43,7 @@ public class CalcAssetRisk {
 				auValue = CVSSPropertyCalculator.calcAU(v.getAuthentication());
 				
 				probability = avValue * acValue * auValue;
-				probability = Math.round(probability * 100.0) / 100.0;
+				//probability = Math.round(probability * 100.0) / 100.0;
 				probabilities.add(probability);
 				
 				crValue = CVSSPropertyCalculator.calcCR(cr);
@@ -72,11 +72,11 @@ public class CalcAssetRisk {
 
 				Double impactPar = (ic + ii + ia) / 3;
 				impact = impactPar * (1 - rl);
-				impact = Math.round(impact * 100.0) / 100.0;
+				//impact = Math.round(impact * 100.0) / 100.0;
 				impacts.add(impact);
 				
 				risk = probability * impact;
-				risk = Math.round(risk * 100.0) / 100.0;
+				//risk = Math.round(risk * 100.0) / 100.0;
 				risks.add(risk);
 			} // end of for with cve-id's list
 
@@ -99,8 +99,8 @@ public class CalcAssetRisk {
 			
 			
 			finalRisk = probForP_aone * (1 / propabilitySum) * riskSum;
-			finalRisk = Math.round(finalRisk * 100.0) / 100.0;
-			System.out.println("risk for asset: " + asset + " is: " +finalRisk);
+			//finalRisk = Math.round(finalRisk * 100.0) / 100.0;
+			System.out.println("risk for asset: " + asset + " is: " + finalRisk);
 			riskData.getAssetWithRisk(imageName).put(asset, finalRisk);
 			riskData.getAssetWithProb(imageName).put(asset, probForP_aone); 
 			

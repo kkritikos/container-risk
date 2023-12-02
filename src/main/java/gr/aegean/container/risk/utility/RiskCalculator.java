@@ -10,7 +10,7 @@ public class RiskCalculator {
 			risk = risk + entry.getValue();
 		}
 		risk = risk / size;
-		risk = Math.round(risk * 100.0) / 100.0;
+		risk = Math.round(risk * 1000000.0) / 1000000.0;
 		
 		return risk;
 	}
@@ -44,7 +44,7 @@ public class RiskCalculator {
 		if (pSum == 0) risk = 0.0;
 		else risk = multiSum / pSum;
 		
-		risk = Math.round(risk * 100.0) / 100.0;
+		risk = Math.round(risk * 1000000.0) / 1000000.0;
 		
 		return risk;
 	}
@@ -63,7 +63,7 @@ public class RiskCalculator {
 		if (pSum == 0) risk = 0;
 		else risk = prob * rSum / pSum;
 		
-		risk = Math.round(risk * 100.0) / 100.0;
+		risk = Math.round(risk * 1000000.0) / 1000000.0;
 		
 		return risk;
 	}
