@@ -33,6 +33,7 @@ public class CalcAssetRisk {
 			for (String cveId: entry.getValue()) {
 				if (cveId.contains("2023")) continue;
 				Vulnerability v = repository.getVulnerability(cveId);
+				if (v == null) continue;
 				
 				double avValue, acValue, auValue, probability, ic, ii, ia, crValue, irValue, arValue;
 				double availabilityValue, integrityValue, confidentialityValue, impact, risk, rl = 0.0;
