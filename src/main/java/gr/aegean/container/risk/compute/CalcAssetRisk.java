@@ -98,7 +98,7 @@ public class CalcAssetRisk {
 				probForP_aone = 1 - probForP_aone;
 				BigDecimal bd2 = new BigDecimal(1.0);
 				bd2 = bd2.subtract(bd);
-				System.out.println("BD is: " + bd.toPlainString());
+				System.out.println("BD is: " + bd2.toString());
 				System.out.println("probForP_aone: " + probForP_aone);
 				for (int x = 0; x < risks.size(); x++) {
 					riskSum = riskSum + risks.get(x);
