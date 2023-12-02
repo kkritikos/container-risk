@@ -22,22 +22,22 @@ public class Orchestrator {
 		List<String> images = PropertyReader.getImages();
 		
 		//Running the image vulnerability scanners
-		/*ClairScannerRunner clairRunner = new ClairScannerRunner();
-		clairRunner.runTool(images);*/
+		ClairScannerRunner clairRunner = new ClairScannerRunner();
+		clairRunner.runTool(images);
 		GrypeRunner grypeRunner = new GrypeRunner();
 		grypeRunner.runTool(images);
 		
 		//Creating the RiskData
 		RiskData globalRiskData = new RiskData(images);
 		Map<String, RiskData> localRiskData = new HashMap<String, RiskData>();
-		/*localRiskData.put("clair", new RiskData(images));*/
+		localRiskData.put("clair", new RiskData(images));
 		localRiskData.put("grype", new RiskData(images));
 		
 		//Running the result analyzers
 		for (int i = 0; i < images.size(); i++) {
 			String image = images.get(i);
-			/*ClairAnalyzer ca = new ClairAnalyzer(globalRiskData,localRiskData.get("clair"),image);
-			ca.analyze(clairRunner.getResultFiles().get(i));*/
+			ClairAnalyzer ca = new ClairAnalyzer(globalRiskData,localRiskData.get("clair"),image);
+			ca.analyze(clairRunner.getResultFiles().get(i));
 			
 			GrypeAnalyzer ga = new GrypeAnalyzer(globalRiskData,localRiskData.get("grype"),image);
 			ga.analyze(grypeRunner.getResultFiles().get(i));
