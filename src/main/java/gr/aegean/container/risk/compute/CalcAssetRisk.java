@@ -31,7 +31,7 @@ public class CalcAssetRisk {
 			List<Double> impacts = new ArrayList<Double>();
 			List<Double> risks = new ArrayList<Double>();
 			for (String cveId: entry.getValue()) {
-				if (cveId.contains("2023")) continue;
+				//if (cveId.contains("2023")) continue;
 				Vulnerability v = repository.getVulnerability(cveId);
 				if (v == null) continue;
 				
