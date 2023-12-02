@@ -22,7 +22,7 @@ public class ClairScannerRunner implements ToolRunner {
 		for (int i = 0; i < imageNames.size(); i++) {
 			System.out.println("Auto file to save clair-scanner output for image: " + imageNames.get(i));
 			
-			String clairFile = imagesDir + File.separator + imageNames.get(i).replace(':', '_') + filePostfix;
+			String clairFile = imagesDir + File.separator + "clair_" + imageNames.get(i).replace(':', '_') + filePostfix;
 			clairFiles.add(clairFile);
 			File file = new File(clairFile);
 			
