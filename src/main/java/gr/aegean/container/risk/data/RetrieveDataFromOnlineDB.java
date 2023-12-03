@@ -45,8 +45,11 @@ public class RetrieveDataFromOnlineDB {
 			j6 = (JSONObject) j5.get("cvssV2");
 		}
 		else {
-			JSONObject j5 = (JSONObject) j4.get("baseMetricV3");
-			j6 = (JSONObject) j5.get("cvssV3");
+			if (j4.has("baseMetricV3")) {
+				JSONObject j5 = (JSONObject) j4.get("baseMetricV3");
+				j6 = (JSONObject) j5.get("cvssV3");
+			}
+			else return null;
 		}
 	
 		return j6; // Returning JSON
