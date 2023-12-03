@@ -27,7 +27,7 @@ public class ClairScannerRunner implements ToolRunner {
 			File file = new File(clairFile);
 			
 			ProcessBuilder processBuilder = new ProcessBuilder();
-			processBuilder.command("bash", "-c", " " + PropertyReader.getClairPath() + File.separator + "./clair-scanner --ip " + PropertyReader.getClairApi() + " -r " + file.toString() + " " + imageNames.get(i));
+			processBuilder.command("bash", "-c", " " + PropertyReader.getClairPath() + File.separator + "./clair-scanner --ip " + PropertyReader.getClairServerIp() + " -r " + file.toString() + " " + imageNames.get(i));
 			//processBuilder.command("bash", "-c","/home/manolis/clair-scanner/./clair-scanner --ip 172.18.0.1 -r lal.json mongo");
 			processBuilder.redirectOutput(file);
 			try {

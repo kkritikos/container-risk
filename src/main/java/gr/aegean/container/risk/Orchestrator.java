@@ -27,14 +27,17 @@ public class Orchestrator {
 		
 		//Running the image vulnerability scanners
 		if (mode == Mode.ALL || mode == Mode.SCAN) {
+			long time = System.currentTimeMillis();
 			clairRunner = new ClairScannerRunner();
 			clairRunner.runTool(images);
 			grypeRunner = new GrypeRunner();
 			grypeRunner.runTool(images);
+			System.out.println("Total scanning time in ms: " + (System.currentTimeMillis() - time));
 		}
 		
 		//Conducting the assessment based on the scanning results
 		if (mode == Mode.ALL || mode == Mode.ASSESS) {
+			long time = System.currentTimeMillis();
 			//Creating the RiskData
 			RiskData globalRiskData = new RiskData(images);
 			Map<String, RiskData> localRiskData = new HashMap<String, RiskData>();
@@ -56,17 +59,22 @@ public class Orchestrator {
 				GrypeAnalyzer ga = new GrypeAnalyzer(globalRiskData,localRiskData.get("grype"),image);
 				ga.analyze(grypeFiles.get(i));
 			}
+			System.out.println("Analysis time in ms: " + (System.currentTimeMillis() - time));
 			
+			time = System.currentTimeMillis();
 			VulnerabilityRepository repo = new VulnerabilityRepository();
 			//Calculating the risks for tool agglomeration & each tool
 			calculateRiskData(globalRiskData,repo,images);
 			calculateRiskData(localRiskData.get("clair"),repo,images);
 			calculateRiskData(localRiskData.get("grype"),repo,images);
 			repo.save();
+			System.out.println("Risk assessment time in ms:" + (System.currentTimeMillis() - time));
 	
+			time = System.currentTimeMillis();
 			//Writing results to results directory
 			ReportGenerator rg = new ReportGenerator(globalRiskData, localRiskData);
 			rg.writeResults();
+			System.out.println("Result saving time in ms:" + (System.currentTimeMillis() - time));
 		}
 	}
 	

@@ -3,7 +3,6 @@ package gr.aegean.container.risk.configuration;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -19,7 +18,7 @@ public final class PropertyReader {
 		ASSESS
 	}
 	
-    private static String clairApi;
+    private static String clairServerIp;
     private static String clairPath;
     private static String nvdUrl;
     private static String cveApiUrl;
@@ -63,7 +62,7 @@ public final class PropertyReader {
 	private static void getProperties(){
 		Properties props = loadPropertyFile();
 		if (props != null){
-			clairApi = getDefaultValueIfNull(props.getProperty("clair.api"),"127.0.0.1");
+			clairServerIp = getDefaultValueIfNull(props.getProperty("clair.server.ip"),"127.0.0.1");
 			clairPath = getDefaultValueIfNull(props.getProperty("clair.path"),"/home/ubuntu/clair-scanner");
 			nvdUrl = getDefaultValueIfNull(props.getProperty("nvd.url"),"https://services.nvd.nist.gov/rest/json/cve/1.0/");
 			cveApiUrl = getDefaultValueIfNull(props.getProperty("cveapi.url"),"https://v1.cveapi.com/");
@@ -100,8 +99,8 @@ public final class PropertyReader {
 		return images;
 	}
 
-	public static String getClairApi() {
-		return clairApi;
+	public static String getClairServerIp() {
+		return clairServerIp;
 	}
 
 	public static String getClairPath() {
